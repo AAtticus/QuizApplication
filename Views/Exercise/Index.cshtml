@@ -1,0 +1,57 @@
+﻿@model IEnumerable<QuizApplication.Models.Exercise>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Question)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Anwser)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.maxNbrOfAttempts)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Hints)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Question)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Anwser)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.maxNbrOfAttempts)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Hints)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

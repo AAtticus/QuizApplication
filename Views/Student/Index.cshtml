@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Available Quizzes</h2>
+
+<table style="width: 100%">
+
+    <thead>
+        <th>Quiz Subject</th>
+        <th>Date Created</th>
+        <th>Is Examination</th>
+        <th>Action</th>
+    </thead>
+
+    @foreach (var item in @ViewBag.AvailableQuizzes)
+    {
+        <tr>
+            <td>@item.Subject</td>
+            <td>@item.Date</td>
+            <td>@item.Exam</td>
+            <td>@Html.ActionLink("Start Quiz", "StartQuiz", new { id = item.Id })</td>
+        </tr>
+    }
+</table>
+
+
+<h2>Your Enrollments</h2>
+
+<table style="width: 100%">
+
+    <thead>
+        <th>Started</th>
+        <th>Quiz</th>
+        <th>Completed</th>
+        <th>Action</th>
+    </thead>
+
+    @foreach (var item in @ViewBag.Enrollments)
+    {
+        <tr>
+            <td>@item.Date</td>
+            <td>@item.QuizID</td>
+            <td>@item.Completed</td>
+            <td>@Html.ActionLink("Report", "Index")</td>
+        </tr>
+    }
+</table>

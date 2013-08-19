@@ -1,0 +1,77 @@
+﻿@model QuizApplication.Models.Exercise
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Exercise</legend>
+
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Question)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Question)
+            @Html.ValidationMessageFor(model => model.Question)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Anwser)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Anwser)
+            @Html.ValidationMessageFor(model => model.Anwser)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.maxNbrOfAttempts)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.maxNbrOfAttempts)
+            @Html.ValidationMessageFor(model => model.maxNbrOfAttempts)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.maxNbrOfSeconds)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.maxNbrOfSeconds)
+            @Html.ValidationMessageFor(model => model.maxNbrOfSeconds)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Hints)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Hints)
+            @Html.ValidationMessageFor(model => model.Hints)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CategoryID, "Category")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("CategoryID", String.Empty)
+            @Html.ValidationMessageFor(model => model.CategoryID)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

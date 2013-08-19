@@ -1,0 +1,93 @@
+﻿@model QuizApplication.Models.Quiz
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Quiz</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Subject)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Subject)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Grade)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Grade)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Exam)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Exam)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.State)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.State)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+<h2>Selected Exercises</h2>
+
+<table style="width: 100%">
+
+    <thead>
+        <th>Question</th>
+        <th>Category</th>
+        <th># Attempts</th>
+        <th># Seconds</th>
+        <th>Action</th>
+    </thead>
+
+    @foreach (var item in Model.Exercises)
+    {
+        <tr>
+            <td>@item.Question</td>
+            <td>@item.CategoryID</td>
+            <td>@item.maxNbrOfAttempts</td>
+            <td>@item.maxNbrOfSeconds</td>
+            <td>@Html.ActionLink("Remove From Quiz", "RemoveExerciseFromQuiz", new { qid=Model.Id, eid=item.Id })</td>
+        </tr>
+    }
+</table>
+
+
+<h2>Available Exercises</h2>
+<p>@Html.ActionLink("Create new Exercise", "Create", "Exercise")</p>
+
+<table style="width: 100%">
+
+    <thead>
+        <th>Question</th>
+        <th>Category</th>
+        <th># Attempts</th>
+        <th># Seconds</th>
+        <th>Action</th>
+    </thead>
+
+    @foreach (var item in ViewBag.AllEx)
+    {
+        <tr>
+            <td>@item.Question</td>
+            <td>@item.CategoryID</td>
+            <td>@item.maxNbrOfAttempts</td>
+            <td>@item.maxNbrOfSeconds</td>
+            <td>@Html.ActionLink("Add To Quiz", "AddExerciseToQuiz", new { qid=Model.Id, eid=item.Id })</td>
+        </tr>
+    }
+</table>

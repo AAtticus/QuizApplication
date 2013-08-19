@@ -1,0 +1,43 @@
+﻿@model QuizApplication.Models.Enrollment
+
+@{
+    ViewBag.Title = "Enrollment";
+}
+
+<h2>Enrollment</h2>
+
+<fieldset>
+    <legend>Enrollment</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.QuizID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.QuizID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UserId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UserId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Completed)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Completed)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Date)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Date)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
