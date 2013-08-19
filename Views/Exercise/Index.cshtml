@@ -1,4 +1,4 @@
-﻿@model IEnumerable<QuizApplication.Models.Exercise>
+﻿@model ICollection<QuizApplication.Models.ExerciseListViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -7,24 +7,24 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", "Exercise")
 </p>
-<table>
+<table style="width: 100%;">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Question)
+            Teacher Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Anwser)
+            Category
+        </th>
+         <th>
+            Question
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.maxNbrOfAttempts)
+            Answer
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Hints)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
+            Date
         </th>
         <th></th>
     </tr>
@@ -32,24 +32,24 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            @Html.DisplayFor(modelItem => item.TeacherName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category)
+        </td>
+         <td>
             @Html.DisplayFor(modelItem => item.Question)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Anwser)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.maxNbrOfAttempts)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Hints)
+            @Html.DisplayFor(modelItem => item.Answer)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Date)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", "Exercise", new { id=item.ExerciseID }, null) |
+            @Html.ActionLink("Details", "Details", "Exercise", new { id=item.ExerciseID }, null) |
+            @Html.ActionLink("Delete", "Delete", "Exercise", new { id=item.ExerciseID }, null)
         </td>
     </tr>
 }

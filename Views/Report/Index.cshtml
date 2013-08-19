@@ -1,0 +1,40 @@
+﻿@model ICollection<QuizApplication.Models.FeedbackAttemptViewModel>
+
+@{
+    ViewBag.Title = "Score Card";
+}
+
+<h1>QUIZ @ViewBag.Subject taken on @ViewBag.Date</h1>
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table" style="width: 100%">
+
+    <thead>
+        <th>Question</th>
+        <th>Correct Answer</th>
+        <th>Your Answer</th>
+        <th># Attempts</th>
+        <th>Points</th>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        { 
+        <tr>
+            <td>@item.question</td>
+            <td>@item.correctAnswer</td>
+            <td>@item.yourAnswer</td>
+            <td>@item.nbrOfAttempts</td>
+            <td>@item.CalculatePoints()</td>
+        </tr>
+        }
+        <tr>
+            <td colspan="5"></td>
+        </tr>
+        <tr>
+            <td colspan="4"><h1>TOTAL</h1></td>
+            <td><h1><span class="strong">@ViewBag.OnTen</span> / 10</h1></td>
+        </tr>
+    </tbody>
+
+</table>

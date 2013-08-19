@@ -12,6 +12,7 @@ namespace QuizApplication.Models
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Required]
         public string Subject { get; set; }
         [Range(1, 6)]
         public int Grade { get; set; }

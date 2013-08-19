@@ -754,3 +754,58 @@ tr.pager td {
             margin: 0;
         }
 }
+
+.message {
+    padding: 10px 15px;
+    font-weight: bolder;
+    color: white;
+}
+
+    .message.success {
+        background-color: darkgreen;
+    }
+    .message.error {
+        background-color: #990000;
+    }
+
+
+.display-label {
+    font-size: 0.9em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bolder;
+}
+
+.display-field {
+    padding-bottom: 15px;
+}
+
+h2 {
+    margin-bottom: 24px;
+    }
+
+.question .editor-label {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.question .editor-field {
+    display: block;
+    margin-bottom: 15px;
+}
+
+.button a {
+    padding: 7px 15px;
+    border: solid 1px #333;
+    background-color: darkgreen;
+    color: white;
+}
+
+.pull-right {
+    float: right;
+}
+
+.pull-left {
+    float: left;
+}

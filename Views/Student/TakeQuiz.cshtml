@@ -5,31 +5,18 @@
 }
 
 <h2>TakeQuiz</h2>
-
+<hr />
+<h3 class="pull-left"> @Html.DisplayFor(model => model.Question)</h3>
+<h3 class="pull-right">Question <strong>@ViewBag.CurrentQuestionDisplay</strong> From <strong> @ViewBag.TotalQuestions</strong></h3>
+<div style="clear: both"></div>
+<hr />
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <fieldset>
+    <fieldset class="question">
         <legend>ExerciseAttemptViewModel</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Question)
-        </div>
-        <div class="editor-field">
-            @Html.DisplayFor(model => model.Question)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MaxNbrOfSeconds)
-        </div>
-        <div class="editor-field">
-            @Html.DisplayFor(model => model.MaxNbrOfSeconds)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MaxNbrOfAttempts)
-        </div>
         <div class="editor-field">
             @Html.DisplayFor(model => model.MaxNbrOfAttempts)
         </div>
@@ -50,15 +37,23 @@
         </div>
 
         <p>
-            <input type="submit" value="Create" />
+            <input class="pull-left" type="submit" value="Submit Answer" /> ( @if ((int)ViewBag.MaxNbrOfSeconds > 0) { <span class="countdown">@Html.DisplayFor(model => model.MaxNbrOfSeconds)</span> } )
+
+            <div class="pull-right">
+                <div class="button">@Html.ActionLink("Next Question", "TakeQuiz", "Student" , new { eid = ViewBag.EnrollmentId, index = ViewBag.NextQuestion }, null)</div>
+            </div>
+
         </p>
     </fieldset>
-}
+    
+
+}<hr />
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    Attempt @TempData["nbrOfAttempts"] from maximum @Html.DisplayFor(model => model.MaxNbrOfAttempts)
 </div>
-
+<hr />
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+

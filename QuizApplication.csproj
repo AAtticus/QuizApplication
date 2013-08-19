@@ -185,6 +185,7 @@
     <Compile Include="Controllers\ExerciseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\QuizController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -196,8 +197,11 @@
     <Compile Include="Models\ExerciseAttemptViewModel.cs" />
     <Compile Include="Models\Enrollment.cs" />
     <Compile Include="Models\Exercise.cs" />
+    <Compile Include="Models\ExerciseListViewModel.cs" />
+    <Compile Include="Models\FeedbackAttemptViewModel.cs" />
     <Compile Include="Models\Quiz.cs" />
     <Compile Include="Models\QuizAppDb.cs" />
+    <Compile Include="Models\QuizListViewModel.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -306,8 +310,6 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
@@ -327,6 +329,7 @@
     <Content Include="Views\Student\Index.cshtml" />
     <Content Include="Views\Student\StartQuiz.cshtml" />
     <Content Include="Views\Student\TakeQuiz.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

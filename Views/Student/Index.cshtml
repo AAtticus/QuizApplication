@@ -2,7 +2,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Available Quizzes</h2>
+<h2>@ViewBag.NbrOfQuizzes Available Quizzes in your grade ( @ViewBag.StudentGrade )</h2>
 
 <table style="width: 100%">
 
@@ -42,7 +42,7 @@
             <td>@item.Date</td>
             <td>@item.QuizID</td>
             <td>@item.Completed</td>
-            <td>@Html.ActionLink("Report", "Index")</td>
+            <td>@Html.ActionLink("Report", "Index", "Report", new { eid = item.Id }, null)</td>
         </tr>
     }
 </table>

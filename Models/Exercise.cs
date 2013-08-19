@@ -27,11 +27,24 @@ namespace QuizApplication.Models
         }
 
         public int Id{ get; set; }
+        [Required]
+        [Display(Name = "Question for this exercise")]
         public string Question { get; set; }
+        [Required]
+        [Display(Name = "Answer for this exercise")]
         public int Anwser { get; set; }
+        [Required]
+        [Display(Name = "Category for this exercise")]
         public int CategoryID { get; set; }
+        [Range(1, 99)]
+        [Required]
+        [Display(Name = "Maximum Attempts")]
         public int maxNbrOfAttempts { get; set; }
+        [Range(0, 1000)]
+        [Required]
+        [Display(Name = "Time in seconds (0 = unlimited)")]
         public int maxNbrOfSeconds { get; set; }
+        [Display(Name = "Optional Hints")]
         public string Hints { get; set; }
 
         public virtual ICollection<Quiz> Quizzes { get; set; }

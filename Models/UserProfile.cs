@@ -17,6 +17,10 @@ namespace QuizApplication.Models
         public int Grade { get; set; }
 
         public ICollection<Enrollment> Enrollments { get; set; }
+
+        public override string ToString() {
+            return this.UserName;
+        }
     }
 
 }

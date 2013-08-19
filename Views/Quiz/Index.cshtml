@@ -1,4 +1,4 @@
-﻿@model IEnumerable<QuizApplication.Models.Quiz>
+﻿@model ICollection<QuizApplication.Models.QuizListViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -7,43 +7,51 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", "Quiz")
 </p>
-<table>
+<table style="width: 100%">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Subject)
+            Teacher
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Grade)
+            Subject
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Exam)
+           Is Exam?
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.State)
+           Grade
         </th>
-        <th></th>
+        <th>
+            State
+        </th>
+        <th>
+
+        </th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Subject)
+            @Html.DisplayFor(modelItem => item.TeacherName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Grade)
+            @Html.DisplayFor(modelItem => item.Subject)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Exam)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.State)
+            @Html.DisplayFor(modelItem => item.Grade)
+        </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.StateName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", "Quiz", new { id=item.QuizID }, null) |
+            @Html.ActionLink("Details", "Details", "Quiz", new { id=item.QuizID }, null) |
+            @Html.ActionLink("Delete", "Delete", "Quiz", new { id=item.QuizID }, null)
         </td>
     </tr>
 }

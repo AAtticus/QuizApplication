@@ -22,8 +22,16 @@ namespace QuizApplication.Controllers
 
         public ActionResult Index()
         {
-            PopulateCategoryDropdownList();
-            return View(db.Exercises.ToList());
+
+            List<Exercise> allExercises = db.Exercises.Include(a => a.Author).ToList();
+            ICollection<ExerciseListViewModel> allExercisesView = new List<ExerciseListViewModel>();
+
+            foreach (Exercise exercise in allExercises)
+            {
+                allExercisesView.Add(new ExerciseListViewModel(exercise));
+            }
+
+            return View(allExercisesView);
         }
 
         //
@@ -60,8 +68,14 @@ namespace QuizApplication.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                var teacher = db.UserProfiles.Find(WebSecurity.CurrentUserId);
+                exercise.Author = teacher;
+
                 db.Exercises.Add(exercise);
                 db.SaveChanges();
+                TempData["Message"] = "Exercise succesfully created";
+                TempData["MessageClass"] = "success";
                 return RedirectToAction("Index");
             }
             PopulateCategoryDropdownList(exercise.CategoryID);
@@ -73,11 +87,19 @@ namespace QuizApplication.Controllers
 
         public ActionResult Edit(int id = 0)
         {
+            
+
             Exercise exercise = db.Exercises.Find(id);
             if (exercise == null)
             {
                 return HttpNotFound();
             }
+
+            if (!hasAccess(exercise))
+            {
+                return RedirectToAction("Index");
+            }
+
             PopulateCategoryDropdownList(exercise.CategoryID);
             return View(exercise);
         }
@@ -91,6 +113,8 @@ namespace QuizApplication.Controllers
             [Bind(Exclude = "Date")]
             Exercise exercise)
         {
+            
+
             if (ModelState.IsValid)
             {
                 db.Entry(exercise).State = EntityState.Modified;
@@ -106,7 +130,15 @@ namespace QuizApplication.Controllers
 
         public ActionResult Delete(int id = 0)
         {
+
+           
             Exercise exercise = db.Exercises.Find(id);
+
+            if (!hasAccess(exercise))
+            {
+                return RedirectToAction("Index");
+            }
+
             if (exercise == null)
             {
                 return HttpNotFound();
@@ -121,7 +153,15 @@ namespace QuizApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+
+
             Exercise exercise = db.Exercises.Find(id);
+
+            if(!hasAccess(exercise))
+            {
+                 return RedirectToAction("Index");
+            }
+
             db.Exercises.Remove(exercise);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -139,6 +179,23 @@ namespace QuizApplication.Controllers
                                    orderby d.Name
                                    select d;
             ViewBag.CategoryID = new SelectList(departmentsQuery, "Id", "Name", selectedDepartment);
-        } 
+        }
+
+
+        private bool hasAccess(Exercise exercise)
+        {
+            bool hasAccess = true;
+            var teacher = db.UserProfiles.Find(WebSecurity.CurrentUserId);
+
+            if (!teacher.Equals(exercise.Author))
+            {
+                TempData["Message"] = "You don't have read/write access to this question";
+                TempData["MessageClass"] = "error";
+                hasAccess = false;
+            }
+
+            return hasAccess;
+
+        }
     }
 }

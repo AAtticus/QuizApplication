@@ -20,7 +20,16 @@ namespace QuizApplication.Controllers
 
         public ActionResult Index()
         {
-            return View(db.Quizzes.ToList());
+            List<Quiz> allQuizzes = db.Quizzes.Include(a => a.Author).Include(s => s.State).ToList();
+            ICollection<QuizListViewModel> allQuizzesView = new List<QuizListViewModel>();
+
+            foreach (Quiz quiz in allQuizzes)
+            {
+                allQuizzesView.Add(new QuizListViewModel(quiz));
+            }
+
+            return View(allQuizzesView);
+
         }
 
         //
@@ -61,9 +70,14 @@ namespace QuizApplication.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                var teacher = db.UserProfiles.Find(WebSecurity.CurrentUserId);
+                quiz.Author = teacher;
                 db.Quizzes.Add(quiz);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["Message"] = "Quiz succesfully created, you can now start adding questions";
+                TempData["MessageClass"] = "success";
+                return RedirectToAction("Details", new { id = quiz.Id } );
             }
 
             PopulateStateDropdownList(quiz.StateID);
@@ -80,6 +94,12 @@ namespace QuizApplication.Controllers
             {
                 return HttpNotFound();
             }
+
+            if (!hasAccess(quiz))
+            {
+                return RedirectToAction("Index");
+            }
+
             PopulateStateDropdownList(quiz.StateID);
             return View(quiz);
         }
@@ -91,6 +111,9 @@ namespace QuizApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Quiz quiz)
         {
+
+           
+
             if (ModelState.IsValid)
             {
                 db.Entry(quiz).State = EntityState.Modified;
@@ -106,12 +129,30 @@ namespace QuizApplication.Controllers
 
         public ActionResult Delete(int id = 0)
         {
+
             Quiz quiz = db.Quizzes.Find(id);
+
+            if (!hasAccess(quiz))
+            {
+                return RedirectToAction("Index");
+            }
+
             if (quiz == null)
             {
                 return HttpNotFound();
             }
-            return View(quiz);
+
+            if (quiz.StateID.Equals(1) || quiz.StateID.Equals(2))
+            {
+                return View(quiz);
+
+            }
+
+            TempData["Message"] = "You cannot delete a quiz which is not under construction or ready";
+            TempData["MessageClass"] = "error";
+            return RedirectToAction("Details", new { id = quiz.Id });
+
+            
         }
 
         //
@@ -121,10 +162,28 @@ namespace QuizApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+
+            
             Quiz quiz = db.Quizzes.Find(id);
-            db.Quizzes.Remove(quiz);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+
+            if (!hasAccess(quiz))
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (quiz.StateID.Equals(1) || quiz.StateID.Equals(2))
+            {
+                db.Quizzes.Remove(quiz);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+               
+            }
+
+            TempData["Message"] = "You cannot delete a quiz which is not under construction or ready";
+            TempData["MessageClass"] = "error";
+            return RedirectToAction("Details", new { id = quiz.Id });
+
+            
         }
 
         protected override void Dispose(bool disposing)
@@ -146,9 +205,28 @@ namespace QuizApplication.Controllers
             Quiz quiz = db.Quizzes.Find(qid);
             Exercise exercise = db.Exercises.Find(eid);
 
+            if (!hasAccess(quiz))
+            {
+                return RedirectToAction("Index");
+            }
+
             if (quiz == null || exercise == null)
             {
                 return RedirectToAction("Index");
+            }
+
+            if (!quiz.StateID.Equals(1))
+            {
+                TempData["Message"] = "You cannot change a quiz which is not under construction";
+                TempData["MessageClass"] = "error";
+                return RedirectToAction("Details", new { id = quiz.Id });
+            }
+
+            if (getEnrollmentsForQuiz(quiz).Count() > 0)
+            {
+                TempData["Message"] = "There are already students taking this course";
+                TempData["MessageClass"] = "error";
+                return RedirectToAction("Details", new { id = quiz.Id });
             }
 
             quiz.Exercises.Add(exercise);
@@ -161,14 +239,60 @@ namespace QuizApplication.Controllers
             Quiz quiz = db.Quizzes.Find(qid);
             Exercise exercise = db.Exercises.Find(eid);
 
+            if (!hasAccess(quiz))
+            {
+                return RedirectToAction("Index");
+            }
+
             if (quiz == null || exercise == null)
             {
                 return RedirectToAction("Index");
+            }
+
+            if (!quiz.StateID.Equals(1))
+            {
+                TempData["Message"] = "You cannot change a quiz which is not under construction";
+                TempData["MessageClass"] = "error";
+                return RedirectToAction("Details", new { id = quiz.Id });
+            }
+
+            if (getEnrollmentsForQuiz(quiz).Count() > 0)
+            {
+                TempData["Message"] = "There are already students taking this course";
+                TempData["MessageClass"] = "error";
+                return RedirectToAction("Details", new { id = quiz.Id });
             }
 
             quiz.Exercises.Remove(exercise);
             db.SaveChanges();
             return RedirectToAction("Details", new { id = quiz.Id });
         }
+
+        private bool hasAccess(Quiz quiz)
+        {
+            bool hasAccess = true;
+            var teacher = db.UserProfiles.Find(WebSecurity.CurrentUserId);
+
+            if (!teacher.Equals(quiz.Author))
+            {
+                TempData["Message"] = "You don't have read/write access to this quiz";
+                TempData["MessageClass"] = "error";
+                hasAccess = false;
+            }
+
+            return hasAccess;
+
+        }
+
+        private IQueryable<Enrollment> getEnrollmentsForQuiz(Quiz quiz)
+        {
+            var eQuery = from enrollment in db.Enrollments
+                         where enrollment.Quiz.Id == quiz.Id
+                         select enrollment;
+
+            return eQuery;
+        }
+
+
     }
 }
